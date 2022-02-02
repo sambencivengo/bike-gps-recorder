@@ -1,5 +1,12 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
+import Paper from '@mui/material/Paper';
+import { Container, Grid } from '@mui/material';
+import 'leaflet/dist/leaflet.css';
+
+import RideCard from './components/RideCard';
+import LeafletMapContainer from './components/LeafletMapContainer';
+
 const url = 'http://localhost:5000/api/v1/rides';
 
 function App() {
@@ -10,8 +17,8 @@ function App() {
 		async function fetchRideData() {
 			try {
 				const res = await fetch(url);
-				const data = await res.json();
-				setRideData(data);
+				const { rides } = await res.json();
+				setRideData(rides);
 			} catch (error) {
 				setError(error);
 			}
@@ -19,22 +26,38 @@ function App() {
 
 		fetchRideData();
 	}, []);
+	const [renderedRide, setRenderedRide] = useState(null);
+
+	const renderPolyLine = (ride = {}) => {
+		setRenderedRide(ride);
+	};
 
 	return (
 		<div className="App">
-			<header className="App-header">
-				<h1>Render bike data here:</h1>
+			<Container maxWidth="lg">
+				<Grid container spacing={2}>
+					<Grid item xs={4}>
+						{error && <h1>Error, couldn't retrieve data</h1>}
 
-				{error && <h1>Error, couldn't retrieve data</h1>}
-
-				{rideData ? (
-					rideData.rides.map((ride) => {
-						return <h1 key={ride.id}>{ride.rideName}</h1>;
-					})
-				) : (
-					<p>Loading...</p>
-				)}
-			</header>
+						{rideData ? (
+							rideData.map((ride) => {
+								return (
+									<RideCard
+										renderPolyLine={renderPolyLine}
+										key={ride._id}
+										ride={ride}
+									/>
+								);
+							})
+						) : (
+							<p>Loading...</p>
+						)}
+					</Grid>
+					<Grid item xs={8}>
+						<LeafletMapContainer ride={renderedRide} />
+					</Grid>
+				</Grid>
+			</Container>
 		</div>
 	);
 }
