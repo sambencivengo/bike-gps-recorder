@@ -12,8 +12,8 @@ function App() {
 				const res = await fetch(url);
 				const data = await res.json();
 				setRideData(data);
-			} catch (e) {
-				setError(e);
+			} catch (error) {
+				setError(error);
 			}
 		}
 
