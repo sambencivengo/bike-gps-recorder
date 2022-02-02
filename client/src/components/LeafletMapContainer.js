@@ -4,14 +4,17 @@ import {
 	Marker,
 	Popup,
 	Polyline,
+	useMap,
 } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const myIcon = L.Icon.Default;
 
 const LeafletMapContainer = ({ ride }) => {
+	const [bounds, setBounds] = useState(null);
+
 	const [polyLine, setPolyLine] = useState([]);
 
 	const redOptions = { color: 'red' };
@@ -26,15 +29,16 @@ const LeafletMapContainer = ({ ride }) => {
 				mainArr.push(nestedArr);
 			});
 			setPolyLine(mainArr);
+			let boundary = [mainArr[0], mainArr[mainArr.length - 1]];
 		}
-		console.log(polyLine);
 	}, [ride]);
 
 	// zoom the map to the polyline
 
 	return (
 		<MapContainer
-			style={{ height: '450px', width: '100%' }}
+			bounds={bounds ? bounds : null}
+			style={{ height: '450px', width: '' }}
 			center={[40.661541, -73.969283]}
 			zoom={14}
 			scrollWheelZoom={true}

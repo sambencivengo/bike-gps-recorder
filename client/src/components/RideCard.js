@@ -8,7 +8,7 @@ const RideCard = ({ ride, renderPolyLine }) => {
 					renderPolyLine(ride);
 				}}
 			>
-				<h1>{ride.name}</h1>
+				<h2>{ride.name}</h2>
 			</Paper>
 		</>
 	);

@@ -26,15 +26,16 @@ function App() {
 
 		fetchRideData();
 	}, []);
-	const [renderedRide, setRenderedRide] = useState(null);
+	const [
+		, setRenderedRide] = useState(null);
 
 	const renderPolyLine = (ride = {}) => {
 		setRenderedRide(ride);
 	};
 
 	return (
-		<div className="App">
-			<Container maxWidth="lg">
+		<div className="App" style={{ marginTop: '50px' }}>
+			<Container maxWidth="md">
 				<Grid container spacing={2}>
 					<Grid item xs={4}>
 						{error && <h1>Error, couldn't retrieve data</h1>}
