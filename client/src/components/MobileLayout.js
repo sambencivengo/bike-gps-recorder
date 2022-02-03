@@ -57,10 +57,13 @@ const MobileLayout = () => {
 				},
 				body: JSON.stringify(data),
 			});
+			return res.json();
 		} catch (error) {
 			console.log(error);
 		}
 	}
+
+	const [postedRide, setPostedRide] = useState(null);
 	function handleRideSubmit(name) {
 		console.log(name);
 		console.log(recordedRide);
@@ -69,7 +72,10 @@ const MobileLayout = () => {
 			userId: 1,
 			coordinates: recordedRide,
 		};
-		postRide(url, data).then((data) => console.log(data));
+		postRide(url, data).then((ride) => {
+			console.log(ride);
+			setPostedRide(ride);
+		});
 	}
 
 	console.log(recordedRide);
@@ -84,6 +90,11 @@ const MobileLayout = () => {
 				>
 					<Grid item xs={8}>
 						<Paper elevation={10}>
+							{postedRide && (
+								<h4>
+									Ride Recorded and Posted to the Database
+								</h4>
+							)}
 							{isRideFinished && (
 								<MobileRideForm
 									handleRideSubmit={handleRideSubmit}
