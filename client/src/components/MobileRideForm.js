@@ -1,14 +1,24 @@
-import { FormControl, Input, InputLabel, Paper } from '@mui/material';
-const MobileRideForm = () => {
+import { Button, FormControl, Input, InputLabel, Paper } from '@mui/material';
+import { useState } from 'react';
+const MobileRideForm = ({ handleRideSubmit }) => {
+	const [formData, setFormData] = useState('');
+	console.log(formData);
 	return (
 		<>
 			<FormControl>
 				<InputLabel>Ride Title</InputLabel>
 				<Input
 					onChange={(e) => {
-						console.log(e.target.value);
+						setFormData(e.target.value);
 					}}
 				/>
+				<Button
+					onClick={() => {
+						handleRideSubmit(formData);
+					}}
+				>
+					Submit
+				</Button>
 			</FormControl>
 		</>
 	);
