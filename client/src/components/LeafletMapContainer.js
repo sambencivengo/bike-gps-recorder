@@ -13,19 +13,23 @@ import { useEffect, useMemo, useState } from 'react';
 const myIcon = L.Icon.Default;
 
 const LeafletMapContainer = ({ ride }) => {
+	function getPolyLineFromRide() {
+		if (!ride) {
+			return null;
+		}
+		const polyLine = ride.coordinates.map((loc) => [loc.lat, loc.lng]);
+		const bounds = [
+			ride.coordinates[0],
+			ride.coordinates[ride.coordinates.length - 1],
+		];
+		return <Polyline pathOptions={redOptions} positions={polyLine} />;
+	}
+
 	const redOptions = { color: 'red' };
-
-	const polyLine = ride.coordinates.map((loc) => [loc.lat, loc.lng]);
-	const bounds = [
-		ride.coordinates[0],
-		ride.coordinates[ride.coordinates.length - 1],
-	];
-
-	// zoom the map to the polyline
 
 	return (
 		<MapContainer
-			bounds={bounds ? bounds : null}
+			// bounds={bounds ? bounds : null}
 			style={{ height: '450px', width: '' }}
 			center={[40.661541, -73.969283]}
 			zoom={14}
@@ -40,7 +44,7 @@ const LeafletMapContainer = ({ ride }) => {
 					A pretty CSS3 popup. <br /> Easily customizable.
 				</Popup>
 			</Marker> */}
-			<Polyline pathOptions={redOptions} positions={polyLine} />
+			{getPolyLineFromRide()}
 		</MapContainer>
 	);
 };
