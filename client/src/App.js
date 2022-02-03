@@ -26,11 +26,10 @@ function App() {
 
 		fetchRideData();
 	}, []);
-	const [
-		, setRenderedRide] = useState(null);
+	const [selectedRide, setSelectedRide] = useState(null);
 
 	const renderPolyLine = (ride = {}) => {
-		setRenderedRide(ride);
+		setSelectedRide(ride);
 	};
 
 	return (
@@ -55,7 +54,7 @@ function App() {
 						)}
 					</Grid>
 					<Grid item xs={8}>
-						<LeafletMapContainer ride={renderedRide} />
+						<LeafletMapContainer ride={selectedRide} />
 					</Grid>
 				</Grid>
 			</Container>
