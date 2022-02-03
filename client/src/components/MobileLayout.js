@@ -1,8 +1,8 @@
 import { Button } from '@mui/material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const MobileLayout = () => {
-	const [record, setRecord] = useState(false);
+	const [isRecording, setIsRecording] = useState(false);
 
 	var options = {
 		enableHighAccuracy: true,
@@ -28,36 +28,53 @@ const MobileLayout = () => {
 
 	// navigator.geolocation.getCurrentPosition(success, error, options);
 
-	let recordInterval;
-	function startTimer() {
-		if (!recordInterval) {
-			recordInterval = setInterval(recordRide, 500);
+	// let recordInterval;
+	// function startTimer() {
+	// 	if (!recordInterval) {
+	// 		recordInterval = setInterval(recordRide, 500);
+	// 	}
+	// }
+	// function recordRide() {
+	// 	console.log('recording');
+	// 	navigator.geolocation.getCurrentPosition(success, error, options);
+	// }
+	// const stopRecording = () => {
+	// 	clearInterval(recordInterval);
+	// 	recordInterval = null;
+	// };
+	useEffect(() => {
+		if (!isRecording) {
+			return;
 		}
-	}
-	function recordRide() {
-		console.log('recording');
-		navigator.geolocation.getCurrentPosition(success, error, options);
-	}
-	const stopRecording = () => {
-		clearInterval(recordInterval);
-		recordInterval = null;
-		setRecord(false);
-	};
+
+		function recordRide() {
+			console.log('recording');
+			navigator.geolocation.getCurrentPosition(success, error, options);
+		}
+
+		const timer = setInterval(recordRide, 500);
+		return () => clearInterval(timer);
+	}, [isRecording]);
 
 	return (
 		<>
 			<h1>Mobile Mode</h1>
-			{!record ? (
+			{!isRecording ? (
 				<Button
 					onClick={() => {
-						setRecord(true);
-						startTimer();
+						setIsRecording(true);
 					}}
 				>
 					Record
 				</Button>
 			) : (
-				<Button onClick={stopRecording}>Stop</Button>
+				<Button
+					onClick={() => {
+						setIsRecording(false);
+					}}
+				>
+					Stop
+				</Button>
 			)}
 		</>
 	);
