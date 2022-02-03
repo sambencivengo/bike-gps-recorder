@@ -19,7 +19,7 @@ const MobileLayout = () => {
 	let activeRide = [];
 	function success(pos) {
 		var crd = pos.coords;
-		activeRide.push([crd.latitude, crd.longitude]);
+		activeRide.push({ lat: crd.latitude, lng: crd.longitude });
 	}
 
 	function error(err) {
@@ -49,17 +49,17 @@ const MobileLayout = () => {
 
 	async function postRide(url = '', data = {}) {
 		console.log(data);
-		// try {
-		// 	const res = await fetch(url, {
-		// 		method: 'POST',
-		// 		headers: {
-		// 			'Content-Type': 'application/json',
-		// 		},
-		// 		body: JSON.stringify(data),
-		// 	});
-		// } catch (error) {
-		// 	console.log(error);
-		// }
+		try {
+			const res = await fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(data),
+			});
+		} catch (error) {
+			console.log(error);
+		}
 	}
 	function handleRideSubmit(name) {
 		console.log(name);
@@ -69,7 +69,7 @@ const MobileLayout = () => {
 			userId: 1,
 			coordinates: recordedRide,
 		};
-		postRide(url, data);
+		postRide(url, data).then((data) => console.log(data));
 	}
 
 	console.log(recordedRide);
