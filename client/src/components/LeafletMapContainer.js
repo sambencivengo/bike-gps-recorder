@@ -13,25 +13,13 @@ import { useEffect, useMemo, useState } from 'react';
 const myIcon = L.Icon.Default;
 
 const LeafletMapContainer = ({ ride }) => {
-	const [bounds, setBounds] = useState(null);
-
-	const [polyLine, setPolyLine] = useState([]);
-
 	const redOptions = { color: 'red' };
-	useEffect(() => {
-		if (ride !== null) {
-			let mainArr = [];
-			ride.coordinates.forEach((loc) => {
-				console.log(loc);
-				let nestedArr = [];
-				nestedArr.push(loc.lat);
-				nestedArr.push(loc.lng);
-				mainArr.push(nestedArr);
-			});
-			setPolyLine(mainArr);
-			let boundary = [mainArr[0], mainArr[mainArr.length - 1]];
-		}
-	}, [ride]);
+
+	const polyLine = ride.coordinates.map((loc) => [loc.lat, loc.lng]);
+	const bounds = [
+		ride.coordinates[0],
+		ride.coordinates[ride.coordinates.length - 1],
+	];
 
 	// zoom the map to the polyline
 
