@@ -8,6 +8,8 @@ const MobileLayout = () => {
 
 	const [isRideFinished, setIsRideFinished] = useState(false);
 	const [isRecording, setIsRecording] = useState(false);
+	const [isFormVisible, setIsFormVisible] = useState(false);
+
 	var options = {
 		enableHighAccuracy: true,
 		timeout: 5000,
@@ -28,6 +30,9 @@ const MobileLayout = () => {
 
 	function handleRecording() {
 		setIsRecording(!isRecording);
+	}
+	function handleHideRecord() {
+		setIsFormVisible(true);
 	}
 
 	useEffect(() => {
@@ -75,6 +80,7 @@ const MobileLayout = () => {
 		postRide(url, data).then((ride) => {
 			console.log(ride);
 			setPostedRide(ride);
+			setIsFormVisible(false);
 		});
 	}
 
@@ -102,6 +108,8 @@ const MobileLayout = () => {
 							)}
 						</Paper>
 						<MobileRideRecord
+							isFormVisible={isFormVisible}
+							handleHideRecord={handleHideRecord}
 							isRecording={isRecording}
 							handleRecording={handleRecording}
 						/>
