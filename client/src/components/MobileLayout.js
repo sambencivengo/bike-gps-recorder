@@ -96,14 +96,12 @@ const MobileLayout = () => {
 				>
 					<Grid item xs={8}>
 						<Paper elevation={10}>
-							{postedRide && (
-								<h1>
-									Ride Recorded and Posted to the Database
-								</h1>
-							)}
+							{/* RIDE CONFIRMATION WILL GO HERE */}
+							{/* {postedRide && confirmation()} */}
 							{isRideFinished && (
 								<MobileRideForm
 									handleRideSubmit={handleRideSubmit}
+									isFormVisible={isFormVisible}
 								/>
 							)}
 						</Paper>
