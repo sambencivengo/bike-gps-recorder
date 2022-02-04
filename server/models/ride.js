@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const rideSchema = new mongoose.Schema({
 	name: {
 		type: String,
-		require: [true, 'Please provide a name for your ride'],
+		required: [true, 'Please provide a name for your ride'],
 	},
 	userId: {
 		type: Number,
