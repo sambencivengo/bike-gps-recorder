@@ -14,7 +14,7 @@ app.use(express.json());
 app.use('/api/v1/rides', ridesRouter);
 
 app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, 'client', 'public', 'index.html'));
+	res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 const start = async () => {
 	try {
