@@ -78,7 +78,11 @@ const MobileLayout = () => {
 			coordinates: recordedRide,
 		};
 		postRide(url, data).then((ride) => {
-			console.log(ride);
+			if (ride.error) {
+				console.log('testing');
+				console.log(ride);
+				return;
+			}
 			setPostedRide(ride);
 			setIsFormVisible(false);
 		});
