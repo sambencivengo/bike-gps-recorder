@@ -4,7 +4,7 @@ import MobileRideForm from './MobileRideForm';
 import MobileRideRecord from './MobileRideRecord';
 
 const MobileLayout = () => {
-	const url = 'http://localhost:5000/api/v1/rides';
+	const url = '/api/v1/rides';
 
 	const [isRideFinished, setIsRideFinished] = useState(false);
 	const [isRecording, setIsRecording] = useState(false);

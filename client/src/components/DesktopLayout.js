@@ -4,7 +4,7 @@ import LeafletMapContainer from './LeafletMapContainer';
 import RideCard from './RideCard';
 
 const DesktopLayout = () => {
-	const url = 'http://localhost:5000/api/v1/rides';
+	const url = '/api/v1/rides';
 
 	const [rideData, setRideData] = useState(null);
 	const [error, setError] = useState(null);
