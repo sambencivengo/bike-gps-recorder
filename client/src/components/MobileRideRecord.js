@@ -1,26 +1,31 @@
-import { Button } from '@mui/material';
-import { useEffect, useState } from 'react';
-
+import { Button, Paper } from '@mui/material';
+import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
+import { createTheme } from '@mui/system';
 const MobileRideRecord = ({ isRecording, handleRecording }) => {
 	return (
 		<>
-			{!isRecording ? (
-				<Button
-					onClick={() => {
-						handleRecording();
-					}}
-				>
-					Record
-				</Button>
-			) : (
-				<Button
-					onClick={() => {
-						handleRecording();
-					}}
-				>
-					Stop
-				</Button>
-			)}
+			<Paper>
+				{!isRecording ? <h2>Press record to begin your ride</h2> : null}
+				{!isRecording ? (
+					<Button
+						style={{ color: 'red' }}
+						onClick={() => {
+							handleRecording();
+						}}
+					>
+						<RadioButtonCheckedIcon />
+					</Button>
+				) : (
+					<Button
+						style={{ color: 'red' }}
+						onClick={() => {
+							handleRecording();
+						}}
+					>
+						Stop
+					</Button>
+				)}
+			</Paper>
 		</>
 	);
 };

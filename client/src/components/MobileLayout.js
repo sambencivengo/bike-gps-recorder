@@ -91,9 +91,9 @@ const MobileLayout = () => {
 					<Grid item xs={8}>
 						<Paper elevation={10}>
 							{postedRide && (
-								<h4>
+								<h1>
 									Ride Recorded and Posted to the Database
-								</h4>
+								</h1>
 							)}
 							{isRideFinished && (
 								<MobileRideForm
