@@ -22,7 +22,14 @@ const LeafletMapContainer = ({ ride }) => {
 			ride.coordinates[0],
 			ride.coordinates[ride.coordinates.length - 1],
 		];
-		return <Polyline pathOptions={redOptions} positions={polyLine} />;
+		return (
+			<Polyline
+				pathOptions={redOptions}
+				smoothFactor={5}
+				positions={polyLine}
+				noClip={true}
+			/>
+		);
 	}
 
 	const redOptions = { color: 'red' };
