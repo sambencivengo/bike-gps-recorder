@@ -1,4 +1,4 @@
-import { Container, Grid } from '@mui/material';
+import { Container, Grid, List } from '@mui/material';
 import { useEffect, useState } from 'react';
 import LeafletMapContainer from './LeafletMapContainer';
 import RideCard from './RideCard';
@@ -33,21 +33,23 @@ const DesktopLayout = () => {
 			<Container maxWidth="md">
 				<Grid container spacing={2}>
 					<Grid item xs={4}>
-						{error && <h1>Error, couldn't retrieve data</h1>}
+						<List>
+							{error && <h1>Error, couldn't retrieve data</h1>}
 
-						{rideData ? (
-							rideData.map((ride) => {
-								return (
-									<RideCard
-										renderPolyLine={renderPolyLine}
-										key={ride._id}
-										ride={ride}
-									/>
-								);
-							})
-						) : (
-							<p>Loading...</p>
-						)}
+							{rideData ? (
+								rideData.map((ride) => {
+									return (
+										<RideCard
+											renderPolyLine={renderPolyLine}
+											key={ride._id}
+											ride={ride}
+										/>
+									);
+								})
+							) : (
+								<p>Loading...</p>
+							)}
+						</List>
 					</Grid>
 					<Grid item xs={8}>
 						<LeafletMapContainer ride={selectedRide} />

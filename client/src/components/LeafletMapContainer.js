@@ -1,14 +1,6 @@
-import {
-	MapContainer,
-	TileLayer,
-	Marker,
-	Popup,
-	Polyline,
-	useMap,
-} from 'react-leaflet';
+import { MapContainer, TileLayer, Polyline } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { useEffect, useMemo, useState } from 'react';
 
 const myIcon = L.Icon.Default;
 
