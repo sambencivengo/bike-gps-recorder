@@ -1,4 +1,4 @@
-import { Container, Grid, List } from '@mui/material';
+import { CircularProgress, Container, Grid, List, Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import LeafletMapContainer from './LeafletMapContainer';
 import RideCard from './RideCard';
@@ -31,30 +31,36 @@ const DesktopLayout = () => {
 		<>
 			<h1>Desktop Mode</h1>
 			<Container maxWidth="md">
-				<Grid container spacing={2}>
-					<Grid item xs={4}>
-						<List>
-							{error && <h1>Error, couldn't retrieve data</h1>}
-
-							{rideData ? (
-								rideData.map((ride) => {
-									return (
-										<RideCard
-											renderPolyLine={renderPolyLine}
-											key={ride._id}
-											ride={ride}
-										/>
-									);
-								})
-							) : (
-								<p>Loading...</p>
-							)}
-						</List>
-					</Grid>
-					<Grid item xs={8}>
+				<Stack>
+					<Container>
 						<LeafletMapContainer ride={selectedRide} />
+					</Container>
+					{error && <h1>Error, couldn't retrieve data</h1>}
+					<Grid
+						spacing={4}
+						sx={{
+							display: 'flex',
+							justifyContent: 'space-evenly',
+							float: 'left',
+							maxHeight: '250px',
+							overflowX: 'scroll',
+						}}
+					>
+						{rideData ? (
+							rideData.map((ride) => {
+								return (
+									<RideCard
+										renderPolyLine={renderPolyLine}
+										key={ride._id}
+										ride={ride}
+									/>
+								);
+							})
+						) : (
+							<CircularProgress color="primary" />
+						)}
 					</Grid>
-				</Grid>
+				</Stack>
 			</Container>
 		</>
 	);

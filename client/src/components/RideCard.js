@@ -6,7 +6,12 @@ const RideCard = ({ ride, renderPolyLine }) => {
 	console.log(theme.palette.primary.main);
 	return (
 		<>
-			<Paper>
+			<Paper
+				variant="outlined"
+				elevation={10}
+				square
+				sx={{ height: '200px', minWidth: '200px' }}
+			>
 				<Typography variant="h5">{ride.name}</Typography>
 				<Button
 					color="secondary"

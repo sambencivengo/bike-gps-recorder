@@ -30,14 +30,14 @@ function App() {
 				main: '#233D4D',
 			},
 			secondary: {
-				main: '#FCCA46',
+				main: '#F5CB5C',
 			},
 			background: {
-				default: '#619B8A',
-				paper: '#fefefe',
+				default: '#CFDBD5',
+				paper: '#E8EDDF',
 			},
 			text: {
-				primary: '#233D4D',
+				primary: '#242423',
 			},
 		},
 	});
