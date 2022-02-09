@@ -40,11 +40,10 @@ const registerUser = async (req, res) => {
 				expiresIn: '2h',
 			}
 		);
-
-		const key = process.env.TOKEN_KEY;
+		user.token = token;
 
 		//send response
-		res.status(200).json(key);
+		res.status(201).json({ user });
 	} catch (error) {
 		console.log(error);
 	}
