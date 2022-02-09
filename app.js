@@ -7,6 +7,7 @@ require('dotenv').config({ path: './.env' });
 const port = process.env.PORT || 5000;
 const db = process.env.MONGO_URI;
 const ridesRouter = require('./routes/ridesRouter');
+const userRouter = require('./routes/userRouter');
 app.use(cors());
 app.use(express.json());
 // app.use(require('./routes/record'));
@@ -17,6 +18,10 @@ app.use(function (req, res, next) {
 	res.setHeader('Access-Control-Allow-Credentials', true);
 	next();
 });
+
+//USER LOGIN and SIGNUP
+app.use('/user/portal', userRouter);
+
 app.use('/api/v1/rides', ridesRouter);
 app.use(express.static(path.join(__dirname, 'client', 'build')));
 app.get('*', (req, res) => {
