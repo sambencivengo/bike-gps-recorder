@@ -51,8 +51,31 @@ const registerUser = async (req, res) => {
 
 const userLogin = async (req, res) => {
 	try {
-		const { userName, email, password } = req.body;
-		console.log(userName, email, password);
+		const { userName, password } = req.body;
+
+		if (!(userName && password)) {
+			res.status(400).json(
+				'Please make sure your credentials are correct'
+			);
+		}
+
+		const user = await User.findOne({ userName });
+
+		if (user && (await bcrypt.compare(password, user.password))) {
+			const token = jsonwebtoken.sign(
+				{ user_id: user._id, userName },
+				process.env.TOKEN_KEY,
+				{
+					expiresIn: '2h',
+				}
+			);
+
+			// saves the token
+			user.token = token;
+
+			res.status(200).json({ user });
+		}
+		res.status(400).json('Ivalid credentials');
 	} catch (error) {
 		console.log(error);
 	}
