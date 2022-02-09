@@ -29,7 +29,6 @@ const DesktopLayout = () => {
 	};
 	return (
 		<>
-			<h1>Desktop Mode</h1>
 			<Container maxWidth="md">
 				<Stack>
 					<Container>
@@ -42,6 +41,7 @@ const DesktopLayout = () => {
 							display: 'flex',
 							justifyContent: 'space-evenly',
 							float: 'left',
+
 							maxHeight: '250px',
 							overflowX: 'scroll',
 						}}

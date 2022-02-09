@@ -21,9 +21,11 @@ const MobileLayout = () => {
 	let activeRide = [];
 	function success(pos) {
 		var crd = pos.coords;
-		activeRide.push({ lat: crd.latitude, lng: crd.longitude });
-	}
 
+		activeRide.push({ lat: crd.latitude, lng: crd.longitude });
+		console.log(activeRide);
+	}
+	console.log(activeRide);
 	function error(err) {
 		console.warn(`ERROR(${err.code}): ${err.message}`);
 	}
@@ -88,7 +90,6 @@ const MobileLayout = () => {
 		});
 	}
 
-	console.log(recordedRide);
 	return (
 		<>
 			<Container>

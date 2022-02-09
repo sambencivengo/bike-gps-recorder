@@ -8,9 +8,14 @@ const RideCard = ({ ride, renderPolyLine }) => {
 		<>
 			<Paper
 				variant="outlined"
-				elevation={10}
+				elevation={30}
 				square
-				sx={{ height: '200px', minWidth: '200px' }}
+				sx={{
+					height: '200px',
+					minWidth: '200px',
+					marginLeft: '10px',
+					marginRight: '10px',
+				}}
 			>
 				<Typography variant="h5">{ride.name}</Typography>
 				<Button
