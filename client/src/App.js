@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 
 import MobileLayout from './components/MobileLayout';
@@ -29,22 +29,35 @@ function App() {
 			},
 		},
 	});
-
+	const [currentUser, setCurrentUser] = useState(null);
 	const [loginError, setLoginError] = useState(null);
-	const loginPOST = (url = '', data = {}) => {
+	const loginPOST = async (url = '', data = {}) => {
 		try {
-			fetch(url, {
-				method: "POST", 
-				
-			})
+			const res = await fetch(url, {
+				method: 'POST',
+				// headers: {
+				// 	'Content-Type': 'application/json',
+				// },
+				body: JSON.stringify(data),
+			});
+			const user = await res.json();
+
+			setCurrentUser(user);
 		} catch (error) {
 			setLoginError(error);
 			console.log(error);
 		}
 	};
 
+	useEffect(() => {
+		if (currentUser) {
+			setIsLoggedIn(true);
+		}
+	}, [currentUser]);
+	console.log(isLoggedIn);
 	const handleLogin = (username, password) => {
-		const data = { username, password };
+		const data = { userName: username, password: password };
+		loginPOST(url, data);
 	};
 	return (
 		<div className="App" style={{ marginTop: '50px' }}>

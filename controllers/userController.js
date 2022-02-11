@@ -75,7 +75,6 @@ const userLogin = async (req, res) => {
 
 			res.status(200).json({ user });
 		}
-		res.status(400).json('Ivalid credentials');
 	} catch (error) {
 		console.log(error);
 	}
