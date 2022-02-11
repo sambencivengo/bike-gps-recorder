@@ -2,7 +2,12 @@ import { Button, Paper } from '@mui/material';
 import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import { createTheme } from '@mui/system';
 import { useState } from 'react';
-const MobileRideRecord = ({ isRecording, handleRecording, isFormVisible, handleHideRecord }) => {
+const MobileRideRecord = ({
+	isRecording,
+	handleRecording,
+	isFormVisible,
+	handleHideRecord,
+}) => {
 	return (
 		<>
 			{!isFormVisible && (
@@ -24,7 +29,7 @@ const MobileRideRecord = ({ isRecording, handleRecording, isFormVisible, handleH
 							style={{ color: 'red' }}
 							onClick={() => {
 								handleRecording();
-								handleHideRecord()
+								handleHideRecord();
 							}}
 						>
 							Stop

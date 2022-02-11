@@ -17,7 +17,6 @@ const LeafletMapContainer = ({ ride }) => {
 		return (
 			<Polyline
 				pathOptions={redOptions}
-				smoothFactor={5}
 				positions={polyLine}
 				noClip={true}
 			/>
