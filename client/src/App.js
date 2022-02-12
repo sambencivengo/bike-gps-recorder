@@ -11,6 +11,7 @@ import Login from './components/Login';
 function App() {
 	const url = 'http://localhost:5000/user/portal/login';
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
+	const [token, setToken] = useState(null);
 
 	const theme = createTheme({
 		palette: {
@@ -35,14 +36,13 @@ function App() {
 		try {
 			const res = await fetch(url, {
 				method: 'POST',
-				// headers: {
-				// 	'Content-Type': 'application/json',
-				// },
+				headers: {
+					'Content-Type': 'application/json',
+				},
 				body: JSON.stringify(data),
 			});
 			const user = await res.json();
-
-			setCurrentUser(user);
+			return user;
 		} catch (error) {
 			setLoginError(error);
 			console.log(error);
@@ -54,23 +54,30 @@ function App() {
 			setIsLoggedIn(true);
 		}
 	}, [currentUser]);
-	console.log(isLoggedIn);
-	const handleLogin = (username, password) => {
+
+	const handleLogin = async (username, password) => {
 		const data = { userName: username, password: password };
-		loginPOST(url, data);
+		const token = await loginPOST(url, data);
+		setToken(token);
 	};
+	console.log(token);
+
+	if (!token) {
+		return (
+			<div className="App" style={{ marginTop: '50px' }}>
+				<Login logIn={handleLogin} />
+			</div>
+		);
+	}
 	return (
 		<div className="App" style={{ marginTop: '50px' }}>
-			{isLoggedIn ? (
-				<ThemeProvider theme={theme}>
-					<CssBaseline />
-					<Container>
-						<DesktopLayout />
-					</Container>
-				</ThemeProvider>
-			) : (
-				<Login logIn={handleLogin} />
-			)}
+			<ThemeProvider theme={theme}>
+				<CssBaseline />
+				<Container>
+					<DesktopLayout />
+				</Container>
+			</ThemeProvider>
+
 			{loginError && <h2>{loginError}</h2>}
 		</div>
 	);

@@ -5,8 +5,6 @@ const Login = ({ logIn }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 
-	console.log({ username }, { password });
-
 	return (
 		<>
 			<h1>Login Form</h1>
