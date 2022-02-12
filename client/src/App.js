@@ -1,17 +1,15 @@
 import './App.css';
 import React, { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
-
-import MobileLayout from './components/MobileLayout';
-import DesktopLayout from './components/DesktopLayout';
-import { Container, CssBaseline } from '@mui/material';
+import Home from './components/Home';
+import { CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Login from './components/Login';
+import { Route, Routes } from 'react-router-dom';
 
 function App() {
+	const [token, setToken] = useState();
 	const url = 'http://localhost:5000/user/portal/login';
-	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [token, setToken] = useState(null);
 
 	const theme = createTheme({
 		palette: {
@@ -30,7 +28,7 @@ function App() {
 			},
 		},
 	});
-	const [currentUser, setCurrentUser] = useState(null);
+
 	const [loginError, setLoginError] = useState(null);
 	const loginPOST = async (url = '', data = {}) => {
 		try {
@@ -49,20 +47,15 @@ function App() {
 		}
 	};
 
-	useEffect(() => {
-		if (currentUser) {
-			setIsLoggedIn(true);
-		}
-	}, [currentUser]);
-
 	const handleLogin = async (username, password) => {
 		const data = { userName: username, password: password };
-		const token = await loginPOST(url, data);
-		setToken(token);
+		const user = await loginPOST(url, data);
+		console.log();
+		setToken(user.user.token);
 	};
-	console.log(token);
 
 	if (!token) {
+		console.log('token!');
 		return (
 			<div className="App" style={{ marginTop: '50px' }}>
 				<Login logIn={handleLogin} />
@@ -73,9 +66,9 @@ function App() {
 		<div className="App" style={{ marginTop: '50px' }}>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
-				<Container>
-					<DesktopLayout />
-				</Container>
+				<Routes>
+					<Route path="/" element={<Home />} />
+				</Routes>
 			</ThemeProvider>
 
 			{loginError && <h2>{loginError}</h2>}

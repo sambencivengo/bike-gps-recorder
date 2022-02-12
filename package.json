@@ -21,7 +21,8 @@
 		"jsonwebtoken": "^8.5.1",
 		"mongodb": "^4.3.1",
 		"mongoose": "^6.1.9",
-		"nodemon": "^2.0.15"
+		"nodemon": "^2.0.15",
+		"react-router-dom": "^6.2.1"
 	},
 	"engines": {
 		"node": "14.17.3"
