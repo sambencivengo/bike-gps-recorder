@@ -6,10 +6,12 @@ import { CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Login from './components/Login';
 import { Route, Routes } from 'react-router-dom';
+import Signup from './components/Signup';
 
 function App() {
 	const [token, setToken] = useState();
-	const url = 'http://localhost:5000/user/portal/login';
+	const loginURL = 'http://localhost:5000/user/portal/login';
+	const signupURL = 'http://localhost:5000/user/portal/register';
 
 	const theme = createTheme({
 		palette: {
@@ -32,7 +34,7 @@ function App() {
 	const [loginError, setLoginError] = useState(null);
 	const loginPOST = async (url = '', data = {}) => {
 		try {
-			const res = await fetch(url, {
+			const res = await fetch(loginURL, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -47,9 +49,31 @@ function App() {
 		}
 	};
 
+	const signupPOST = async (url = '', data = {}) => {
+		console.log({ data });
+		try {
+			const res = await fetch(signupURL, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(data),
+			});
+			const user = await res.json();
+			return user;
+		} catch (error) {
+			setLoginError(error);
+			console.log(error);
+		}
+	};
+	const handleSignup = async (username = '', email = '', password = '') => {
+		const data = { username: username, email: email, password: password };
+		console.log(data);
+		const newUser = await signupPOST(signupURL, data);
+	};
 	const handleLogin = async (username, password) => {
-		const data = { userName: username, password: password };
-		const user = await loginPOST(url, data);
+		const data = { username: username, password: password };
+		const user = await loginPOST(loginURL, data);
 		setToken(user.user.token);
 	};
 
@@ -58,6 +82,7 @@ function App() {
 		return (
 			<div className="App" style={{ marginTop: '50px' }}>
 				<Login logIn={handleLogin} />
+				<Signup signup={handleSignup} />
 			</div>
 		);
 	}
