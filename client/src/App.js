@@ -50,7 +50,6 @@ function App() {
 	const handleLogin = async (username, password) => {
 		const data = { userName: username, password: password };
 		const user = await loginPOST(url, data);
-		console.log();
 		setToken(user.user.token);
 	};
 

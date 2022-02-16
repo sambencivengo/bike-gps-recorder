@@ -42,7 +42,6 @@ const registerUser = async (req, res) => {
 const userLogin = async (req, res) => {
 	try {
 		const { userName, password } = req.body;
-
 		if (!(userName && password)) {
 			res.status(400).json(
 				'Please make sure your credentials are correct'
@@ -50,23 +49,18 @@ const userLogin = async (req, res) => {
 		}
 
 		const user = await User.findOne({ userName });
-
-		const token = jwt.sign({ id, username }, process.env.JWT_SECRET, {
-			expiresIn: '30d',
-		});
-
+		let token;
 		if (user && (await bcrypt.compare(password, user.password))) {
-			const token = jsonwebtoken.sign(
+			token = jwt.sign(
 				{ user_id: user._id, userName },
 				process.env.TOKEN_KEY,
 				{
-					expiresIn: '2h',
+					expiresIn: '30d',
 				}
 			);
+			
 
 			// saves the token
-			user.token = token;
-
 			res.status(200).json({ user });
 		}
 	} catch (error) {
