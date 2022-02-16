@@ -5,13 +5,13 @@ const userSchema = new mongoose.Schema({
 	username: {
 		type: String,
 		required: [true, 'Please enter a username'],
-		unique: [true, 'This username has already been taken'],
+		unique: true,
 		lowercase: true,
 	},
 	email: {
 		type: String,
 		required: [true, 'Please enter a valid email address'],
-		unique: [true, 'An account associated with this email already exists'],
+		unique: true,
 		lowercase: true,
 		validate: [validator.isEmail, 'Please enter a valid email'],
 	},

@@ -1,4 +1,5 @@
 const bcrypt = require('bcryptjs/dist/bcrypt');
+const res = require('express/lib/response');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
@@ -7,7 +8,20 @@ const handleErrors = (err) => {
 	const errors = {
 		email: '',
 		password: '',
+		username: '',
 	};
+
+	//duplicate error code
+
+	if (err.code === 11000) {
+		if (err.keyValue.username) {
+			errors.username = 'That username has already been taken';
+		}
+		if (err.keyValue.email) {
+			errors.email = 'That email has already been taken';
+		}
+		return errors;
+	}
 
 	//validation errors
 	if (err.message.includes('user validation failed')) {
