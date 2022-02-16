@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
 	username: {
@@ -23,7 +24,19 @@ const userSchema = new mongoose.Schema({
 			'Please enter a password that is at least 6 characters in length',
 		],
 	},
-	token: { type: String },
+});
+
+// function fires after the doc is saved
+// userSchema.post('save', (doc, next) => {
+// 	console.log('New user was created & saved', doc);
+// 	next();
+// });
+
+// function fires before the doc is saved
+userSchema.pre('save', async function (next) {
+	const salt = await bcrypt.genSalt();
+	this.password = await bcrypt.hash(this.password, salt);
+	next();
 });
 
 module.exports = mongoose.model('user', userSchema);
