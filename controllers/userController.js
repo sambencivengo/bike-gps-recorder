@@ -2,35 +2,7 @@ const bcrypt = require('bcryptjs/dist/bcrypt');
 const res = require('express/lib/response');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
-
-const handleErrors = (err) => {
-	console.log(err.message, err.code);
-	const errors = {
-		email: '',
-		password: '',
-		username: '',
-	};
-
-	//duplicate error code
-
-	if (err.code === 11000) {
-		if (err.keyValue.username) {
-			errors.username = 'That username has already been taken';
-		}
-		if (err.keyValue.email) {
-			errors.email = 'That email has already been taken';
-		}
-		return errors;
-	}
-
-	//validation errors
-	if (err.message.includes('user validation failed')) {
-		Object.values(err.errors).forEach(({ properties }) => {
-			errors[properties.path] = properties.message;
-		});
-	}
-	return errors;
-};
+const handleValidationError = require('../errors/validation');
 
 const registerUser = async (req, res) => {
 	const { email, username, password } = req.body;
@@ -40,7 +12,7 @@ const registerUser = async (req, res) => {
 		const user = await User.create({ email, username, password });
 		res.status(201).json(user);
 	} catch (error) {
-		const errors = handleErrors(error);
+		const errors = handleValidationError(error);
 		res.status(400).json({ errors });
 	}
 	// OLD BLOCK
