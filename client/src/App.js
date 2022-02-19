@@ -5,11 +5,11 @@ import Home from './components/Home';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Login from './components/Login';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import Signup from './components/Signup';
 
 function App() {
-	const [token, setToken] = useState();
+	const navigate = useNavigate();
 	const loginURL = '/user/portal/login';
 	const signupURL = '/user/portal/register';
 	const [signupErrors, setSignupErrors] = useState(null);
@@ -45,7 +45,6 @@ function App() {
 				body: JSON.stringify(payload),
 			});
 			const data = await res.json();
-			return data;
 		} catch (error) {
 			setLoginError(error);
 			console.log(error);
@@ -63,6 +62,10 @@ function App() {
 				body: JSON.stringify(payload),
 			});
 			const data = await res.json();
+			console.log(data);
+			if (data.user) {
+				navigate('/login');
+			}
 			if (data.errors) {
 				setSignupErrors(data.errors);
 			}

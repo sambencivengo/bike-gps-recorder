@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const handleValidationError = require('../errors/validation');
 const bcrypt = require('bcrypt');
@@ -9,7 +8,7 @@ const maxAge = 3 * 24 * 60 * 60;
 
 const registerUser = async (req, res) => {
 	const { email, username, password } = req.body;
-	console.log('hitting route');
+	console.log('hitting register route');
 	try {
 		const user = await User.create({ email, username, password });
 		const token = createToken(user._id);
@@ -31,7 +30,7 @@ const userLogin = async (req, res) => {
 		}
 
 		const user = await User.findOne({ userName });
-		let token;
+
 		if (user && (await bcrypt.compare(password, user.password))) {
 			console.log(bcrypt.compare(password, user.password));
 			// token = jwt.sign(
