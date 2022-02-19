@@ -10,8 +10,8 @@ import Signup from './components/Signup';
 
 function App() {
 	const [token, setToken] = useState();
-	const loginURL = 'http://localhost:5000/user/portal/login';
-	const signupURL = 'http://localhost:5000/user/portal/register';
+	const loginURL = '/user/portal/login';
+	const signupURL = '/user/portal/register';
 	const [signupErrors, setSignupErrors] = useState(null);
 
 	const theme = createTheme({
@@ -41,6 +41,7 @@ function App() {
 				headers: {
 					'Content-Type': 'application/json',
 				},
+
 				body: JSON.stringify(payload),
 			});
 			const data = await res.json();
@@ -58,6 +59,7 @@ function App() {
 				headers: {
 					'Content-Type': 'application/json',
 				},
+
 				body: JSON.stringify(payload),
 			});
 			const data = await res.json();

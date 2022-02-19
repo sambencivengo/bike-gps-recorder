@@ -10,20 +10,20 @@ const ridesRouter = require('./routes/ridesRouter');
 const userRouter = require('./routes/userRouter');
 const cookieParser = require('cookie-parser');
 
-app.use(cors());
+const corsOptions = {
+	origin: 'http://localhost:3000' || process.env.CORS_ORIGIN,
+};
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 // app.use(require('./routes/record'));
-app.use(function (req, res, next) {
-	res.setHeader('Access-Control-Allow-Origin', '*');
-	res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-	res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-	res.setHeader('Access-Control-Allow-Credentials', true);
-	next();
-});
 
 //USER LOGIN and SIGNUP
 app.use('/user/portal', userRouter);
+app.get('/user/portal/register', (req, res) => {
+	res.cookie('testing', 'hello idiot');
+	res.status(200).json('cookies sent!');
+});
 
 app.use('/api/v1/rides', ridesRouter);
 
@@ -39,7 +39,6 @@ app.get('/set-cookies', (req, res) => {
 
 app.get('/read-cookies', (req, res) => {
 	const cookies = req.cookies;
-	console.log(res);
 	res.json(cookies.jwt);
 });
 //

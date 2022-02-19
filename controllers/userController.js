@@ -7,26 +7,13 @@ const express = require('express');
 const app = express();
 const maxAge = 3 * 24 * 60 * 60;
 
-const cookieChecker = (req, res) => {
-	try {
-		const cookies = req.cookies;
-		res.status(200).json(cookies);
-		console.log(res);
-	} catch (error) {
-		console.log(error);
-	}
-};
-
 const registerUser = async (req, res) => {
 	const { email, username, password } = req.body;
-
+	console.log('hitting route');
 	try {
 		const user = await User.create({ email, username, password });
 		const token = createToken(user._id);
-
-		res.cookie('jwt', token, { maxAge: maxAge * 1000 });
-		console.log('Cookies: ', res.cookies);
-
+		res.cookie('jwt', token, { httpOnly: true, maxAge: maxAge * 1000 });
 		res.status(201).json({ user: user._id });
 	} catch (error) {
 		const errors = handleValidationError(error);
@@ -63,4 +50,4 @@ const userLogin = async (req, res) => {
 	}
 };
 
-module.exports = { userLogin, registerUser, cookieChecker };
+module.exports = { userLogin, registerUser };
