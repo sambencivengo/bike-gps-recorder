@@ -39,8 +39,8 @@ app.get('/set-cookies', (req, res) => {
 
 app.get('/read-cookies', (req, res) => {
 	const cookies = req.cookies;
-	console.log(cookies);
-	res.json(cookies.newUser);
+	console.log(res);
+	res.json(cookies.jwt);
 });
 //
 app.use(express.static(path.join(__dirname, 'client', 'build')));

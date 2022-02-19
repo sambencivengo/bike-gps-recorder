@@ -1,51 +1,37 @@
-const res = require('express/lib/response');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const handleValidationError = require('../errors/validation');
 const bcrypt = require('bcrypt');
+const createToken = require('../middleware/createToken');
+const express = require('express');
+const app = express();
+const maxAge = 3 * 24 * 60 * 60;
+
+const cookieChecker = (req, res) => {
+	try {
+		const cookies = req.cookies;
+		res.status(200).json(cookies);
+		console.log(res);
+	} catch (error) {
+		console.log(error);
+	}
+};
 
 const registerUser = async (req, res) => {
 	const { email, username, password } = req.body;
-	console.log(email, username, password);
 
 	try {
 		const user = await User.create({ email, username, password });
-		res.status(201).json(user);
+		const token = createToken(user._id);
+
+		res.cookie('jwt', token, { maxAge: maxAge * 1000 });
+		console.log('Cookies: ', res.cookies);
+
+		res.status(201).json({ user: user._id });
 	} catch (error) {
 		const errors = handleValidationError(error);
 		res.status(400).json({ errors });
 	}
-	// OLD BLOCK
-	//
-	// try {
-	// 	const { userName, email, password } = req.body;
-	// 	// make sure the inputs are filled out
-	// 	if (!(email && userName && password)) {
-	// 		res.status(400).json({
-	// 			success: false,
-	// 			msg: 'All input is required',
-	// 		});
-	// 	}
-	// 	// check for the existing user
-	// 	const existingUser = await User.findOne({ email });
-	// 	if (existingUser) {
-	// 		return res.status(409).json({
-	// 			success: false,
-	// 			msg: 'An user with this email already exists',
-	// 		});
-	// 	}
-	// 	const encryptedPassword = await bcrypt.hash(password, 10);
-	// 	// create user in the DB
-	// 	const user = await User.create({
-	// 		userName,
-	// 		email: email.toLowerCase(),
-	// 		password: encryptedPassword,
-	// 	});
-	// 	//send response
-	// 	res.status(201).json({ user });
-	// } catch (error) {
-	// 	console.log(error);
-	// }
 };
 
 const userLogin = async (req, res) => {
@@ -60,13 +46,14 @@ const userLogin = async (req, res) => {
 		const user = await User.findOne({ userName });
 		let token;
 		if (user && (await bcrypt.compare(password, user.password))) {
-			token = jwt.sign(
-				{ user_id: user._id, userName },
-				process.env.TOKEN_KEY,
-				{
-					expiresIn: '30d',
-				}
-			);
+			console.log(bcrypt.compare(password, user.password));
+			// token = jwt.sign(
+			// 	{ user_id: user._id, userName },
+			// 	process.env.TOKEN_KEY,
+			// 	{
+			// 		expiresIn: '30d',
+			// 	}
+			// );
 
 			// saves the token
 			res.status(200).json({ user });
@@ -76,4 +63,4 @@ const userLogin = async (req, res) => {
 	}
 };
 
-module.exports = { userLogin, registerUser };
+module.exports = { userLogin, registerUser, cookieChecker };

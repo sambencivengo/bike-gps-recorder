@@ -12,6 +12,7 @@ function App() {
 	const [token, setToken] = useState();
 	const loginURL = 'http://localhost:5000/user/portal/login';
 	const signupURL = 'http://localhost:5000/user/portal/register';
+	const [signupErrors, setSignupErrors] = useState(null);
 
 	const theme = createTheme({
 		palette: {
@@ -32,35 +33,37 @@ function App() {
 	});
 
 	const [loginError, setLoginError] = useState(null);
-	const loginPOST = async (url = '', data = {}) => {
+	const loginPOST = async (url = '', payload = {}) => {
+		console.log(payload);
 		try {
-			const res = await fetch(loginURL, {
+			const res = await fetch(url, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(data),
+				body: JSON.stringify(payload),
 			});
-			const user = await res.json();
-			return user;
+			const data = await res.json();
+			return data;
 		} catch (error) {
 			setLoginError(error);
 			console.log(error);
 		}
 	};
 
-	const signupPOST = async (url = '', data = {}) => {
-		console.log({ data });
+	const signupPOST = async (url = '', payload = {}) => {
 		try {
-			const res = await fetch(signupURL, {
+			const res = await fetch(url, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(data),
+				body: JSON.stringify(payload),
 			});
-			const user = await res.json();
-			return user;
+			const data = await res.json();
+			if (data.errors) {
+				setSignupErrors(data.errors);
+			}
 		} catch (error) {
 			setLoginError(error);
 			console.log(error);
@@ -68,30 +71,33 @@ function App() {
 	};
 	const handleSignup = async (username = '', email = '', password = '') => {
 		const data = { username: username, email: email, password: password };
-		console.log(data);
 		const newUser = await signupPOST(signupURL, data);
 	};
 	const handleLogin = async (username, password) => {
 		const data = { username: username, password: password };
 		const user = await loginPOST(loginURL, data);
-		setToken(user.user.token);
+		console.log(user);
 	};
 
-	if (!token) {
-		console.log('token!');
-		return (
-			<div className="App" style={{ marginTop: '50px' }}>
-				<Login logIn={handleLogin} />
-				<Signup signup={handleSignup} />
-			</div>
-		);
-	}
 	return (
 		<div className="App" style={{ marginTop: '50px' }}>
 			<ThemeProvider theme={theme}>
 				<CssBaseline />
 				<Routes>
 					<Route path="/" element={<Home />} />
+					<Route
+						path="/login"
+						element={<Login logIn={handleLogin} />}
+					/>
+					<Route
+						path="/register"
+						element={
+							<Signup
+								error={signupErrors}
+								signup={handleSignup}
+							/>
+						}
+					/>
 				</Routes>
 			</ThemeProvider>
 
